@@ -106,5 +106,5 @@ The value looksForManyOccurences and occurencesSeparators have been set here. If
     [_wordStartsWithB setRegexp:regexp];
 ```
 
-If default NSRegularExpression isn't sufficient you can pass custom.
+If default NSRegularExpression isn't sufficient you can set custom.
 
