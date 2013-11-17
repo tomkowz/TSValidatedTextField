@@ -76,6 +76,6 @@ typedef void (^ValidationBlock)(ValidationResult result, BOOL isEditing);
  If text is shorter than this value the field looks normal (both colors valid and invalid aren't apply 
  but block has been called with ValueTooShortToValidate parameter).
  Default set to 1 (minimum value). */
-@property NSUInteger minimalNumberOfCharacterToStartValidation;
+@property NSUInteger minimalNumberOfCharactersToStartValidation;
 
 @end

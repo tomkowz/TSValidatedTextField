@@ -32,6 +32,7 @@
     [self configureWordStartsWithB]; /// wordStartsWithB
 }
 
+
 - (void)configureColoredTextField
 {
     _fullNameTextField.regexpPattern = @"[a-zA-Z]{2,}+(\\s{1}[a-zA-Z]{2,}+)+"; /// e.g. Tomasz Szulc or Cing Yo Ciong
@@ -42,7 +43,7 @@
 - (void)configureTextFieldWithValidationBlock
 {
     _phoneNumberTextField.regexpPattern = @"\\d{3}-\\d{3}-\\d{3}"; /// e.g 555-343-333
-    _phoneNumberTextField.minimalNumberOfCharacterToStartValidation = 11;
+    _phoneNumberTextField.minimalNumberOfCharactersToStartValidation = 11;
     _phoneNumberTextField.validWhenType = NO;
     _phoneNumberTextField.validatedFieldBlock = ^(ValidationResult result, BOOL isEditing) {
       
@@ -69,7 +70,7 @@
     _wordStartsWithA.regexpInvalidColor = [UIColor invalidColor];
     
     /// Visualization of validation will be visible when value is 4 characters long.
-    _wordStartsWithA.minimalNumberOfCharacterToStartValidation = 4;
+    _wordStartsWithA.minimalNumberOfCharactersToStartValidation = 4;
     
     [_wordStartsWithA addObserver:self forKeyPath:@"isValid" options:NSKeyValueObservingOptionNew context:(__bridge void *)(self)];
 }
@@ -88,7 +89,7 @@
     _separatedNumbersByComma.regexpValidColor = [UIColor validColor];
     _separatedNumbersByComma.regexpInvalidColor = [UIColor invalidColor];
     _separatedNumbersByComma.looksForManyOccurences = YES;
-    _separatedNumbersByComma.occurencesSeparators = @[@","];
+    _separatedNumbersByComma.occurencesSeparators = @[@",", @", "];
 }
 
 - (void)configureWordStartsWithB

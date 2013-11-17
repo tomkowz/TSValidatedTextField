@@ -27,6 +27,7 @@
 @synthesize regexpPattern = _regexpPattern;
 @synthesize looksForManyOccurences = _looksForManyOccurences;
 @synthesize validWhenType = _validWhenType;
+@synthesize minimalNumberOfCharactersToStartValidation = _minimalNumberOfCharactersToStartValidation;
 
 #pragma mark - Initialization
 - (id)initWithFrame:(CGRect)frame
@@ -60,7 +61,7 @@
 
 - (void)configureForValidation
 {
-    _minimalNumberOfCharacterToStartValidation = 1;
+    _minimalNumberOfCharactersToStartValidation = 1;
     _validWhenType = YES;
     _fieldHasBeenEdited = NO;
     _validationResult = ValidationFailed;
@@ -89,7 +90,7 @@
                 _validationResult = [self validRegexp];
                 [self didChangeValueForKey:@"isValid"];
 
-                if (self.text.length >= _minimalNumberOfCharacterToStartValidation)
+                if (self.text.length >= _minimalNumberOfCharactersToStartValidation)
                 {
                     [self updateViewForState:_validationResult];
                     
@@ -97,7 +98,7 @@
                         _validatedFieldBlock(_validationResult, isEditing);
                 }
                 else if (self.text.length == 0 ||
-                         self.text.length < _minimalNumberOfCharacterToStartValidation)
+                         self.text.length < _minimalNumberOfCharactersToStartValidation)
                 {
                     if (_baseColor)
                         self.textColor = _baseColor;
@@ -140,6 +141,18 @@
 - (void)setValidWhenType:(BOOL)validWhenType
 {
     _validWhenType = validWhenType;
+}
+
+- (void)setMinimalNumberOfCharactersToStartValidation:(NSUInteger)minimalNumberOfCharacterToStartValidation
+{
+    if (minimalNumberOfCharacterToStartValidation  < 1)
+        minimalNumberOfCharacterToStartValidation = 1;
+    _minimalNumberOfCharactersToStartValidation = minimalNumberOfCharacterToStartValidation;
+}
+
+- (NSUInteger)minimalNumberOfCharactersToStartValidation
+{
+    return _minimalNumberOfCharactersToStartValidation;
 }
 
 
