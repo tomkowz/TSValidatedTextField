@@ -9,10 +9,13 @@ Simple and ready to use subclass of UITextField that allows you to validate Text
 Properties
 ====================
 **regexpPattern** - String pattern which will be used to valid value from the field.
+
 **regexp** - NSRegularExpression object that you can pass to use your RegularExpression object instead of default one.
 
 **regexpValidColor** - Color for valid text value.
+
 **regexpInvalidColor** - Color for invalid text value.
+
 Colors aren't necessary, you can set block instead and do other things after field validation.
 
 **validatedFieldBlock** - Block which return ValidationResult enum value. It's not set by default. You may set it, but it's not necessary. It should be used for more sophisticated things during validation than changing textField color (use regexpValidColor and regexpInvalidColor instead).
@@ -20,6 +23,7 @@ Colors aren't necessary, you can set block instead and do other things after fie
 **validWhenType** - Default set to YES. If you set it to NO value will be validated when editing is done. E.g. after switch to next field.
 
 **looksForManyOccurences** - If set to YES field will be validated and validator will be looking for one or more occurencies in the value. It should be used with occurencesSeparators property described below.
+
 **occurencesSeparators** - This value should be set only if you are using looksForManyOccurences. This array store separators which user can use to separate content in the field. E.g. user typed numbers "20, 30,40, 50". If occurencesSeparators is set to @[",", ", "] the value will be validated successful. Property can simplify pattern.
 
 **numberOfCharactersToStartValidation** - Field is validate when its value will be equal or longer than set number. If the text is shorter than this value the field looks normal (without valid and invalid colors - start state) but if block has been defined it will be called with ValueTooShortToValidate. Default set to 1 (minimum value).
