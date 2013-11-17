@@ -14,7 +14,7 @@ typedef enum {
     ValueTooShortToValidate
 } ValidationResult;
 
-typedef void (^ValidationBlock)(ValidationResult result);
+typedef void (^ValidationBlock)(ValidationResult result, BOOL isEditing);
 
 
 @interface TSValidatedTextField : UITextField
@@ -72,10 +72,10 @@ typedef void (^ValidationBlock)(ValidationResult result);
  Default set to nil. */
 @property NSArray *occurencesSeparators;
 
-/** If this property has been set then visualization of validation will be visible 
- when number of the eletters will be equal or greater than this number.
- If text is shorter than this value the field looks normal (both colors valid and invalid aren't apply but block has been called with ValueTooShortToValidate parameter).
+/** Field is validate when its value will be equal or greater than set number.
+ If text is shorter than this value the field looks normal (both colors valid and invalid aren't apply 
+ but block has been called with ValueTooShortToValidate parameter).
  Default set to 1 (minimum value). */
-@property NSUInteger numberOfCharactersToStartVisualization;
+@property NSUInteger minimalNumberOfCharacterToStartValidation;
 
 @end

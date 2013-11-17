@@ -60,7 +60,7 @@
 
 - (void)configureForValidation
 {
-    _numberOfCharactersToStartVisualization = 1;
+    _minimalNumberOfCharacterToStartValidation = 1;
     _validWhenType = YES;
     _fieldHasBeenEdited = NO;
     _validationResult = ValidationFailed;
@@ -89,21 +89,21 @@
                 _validationResult = [self validRegexp];
                 [self didChangeValueForKey:@"isValid"];
 
-                if (self.text.length >= _numberOfCharactersToStartVisualization)
+                if (self.text.length >= _minimalNumberOfCharacterToStartValidation)
                 {
                     [self updateViewForState:_validationResult];
                     
                     if (_validatedFieldBlock)
-                        _validatedFieldBlock(_validationResult);
+                        _validatedFieldBlock(_validationResult, isEditing);
                 }
                 else if (self.text.length == 0 ||
-                         self.text.length < _numberOfCharactersToStartVisualization)
+                         self.text.length < _minimalNumberOfCharacterToStartValidation)
                 {
                     if (_baseColor)
                         self.textColor = _baseColor;
                     
                     if (_validatedFieldBlock)
-                        _validatedFieldBlock(ValueTooShortToValidate);
+                        _validatedFieldBlock(ValueTooShortToValidate, isEditing);
                 }
             }
         }
