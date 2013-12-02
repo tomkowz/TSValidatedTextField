@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "TSValidatedTextField.h"
+#import <TSValidatedTextField.h>
 #import "UIColor+CustomColors.h"
 
 @interface ViewController () <UITextFieldDelegate>

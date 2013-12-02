@@ -1,0 +1,14 @@
+PODS:
+  - TSValidatedTextField (0.1.0)
+
+DEPENDENCIES:
+  - TSValidatedTextField (from `../`)
+
+EXTERNAL SOURCES:
+  TSValidatedTextField:
+    :path: ../
+
+SPEC CHECKSUMS:
+  TSValidatedTextField: d4b1174828656a69bb1982233de99e0cf93c90bb
+
+COCOAPODS: 0.28.0
