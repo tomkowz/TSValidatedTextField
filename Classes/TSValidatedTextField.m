@@ -71,46 +71,55 @@
 
 
 #pragma mark - Lifecycle of validation
+- (void)validateFieldWithIsEditing:(BOOL)isEditing {
+    if (!_previousText || ![_previousText isEqualToString:self.text])
+    {
+        _previousText = self.text;
+        if (self.text.length > 0 && !_fieldHasBeenEdited)
+            _fieldHasBeenEdited = YES;
+        
+        if (_fieldHasBeenEdited)
+        {
+            [self willChangeValueForKey:@"isValid"];
+            _validationResult = [self validRegexp];
+            [self didChangeValueForKey:@"isValid"];
+            
+            if (self.text.length >= _minimalNumberOfCharactersToStartValidation)
+            {
+                [self updateViewForState:_validationResult];
+                
+                if (_validatedFieldBlock)
+                    _validatedFieldBlock(_validationResult, isEditing);
+            }
+            else if (self.text.length == 0 ||
+                     self.text.length < _minimalNumberOfCharactersToStartValidation)
+            {
+                if (_baseColor)
+                    self.textColor = _baseColor;
+                
+                if (_validatedFieldBlock)
+                    _validatedFieldBlock(ValueTooShortToValidate, isEditing);
+            }
+        }
+    }
+
+}
+
 
 - (BOOL)isEditing
 {
     BOOL isEditing = [super isEditing];
     if ((isEditing && _validWhenType) ||
-        (!isEditing && !_validWhenType))
-    {
-        if (!_previousText || ![_previousText isEqualToString:self.text])
-        {
-            _previousText = self.text;
-            if (self.text.length > 0 && !_fieldHasBeenEdited)
-                _fieldHasBeenEdited = YES;
-            
-            if (_fieldHasBeenEdited)
-            {
-                [self willChangeValueForKey:@"isValid"];
-                _validationResult = [self validRegexp];
-                [self didChangeValueForKey:@"isValid"];
-
-                if (self.text.length >= _minimalNumberOfCharactersToStartValidation)
-                {
-                    [self updateViewForState:_validationResult];
-                    
-                    if (_validatedFieldBlock)
-                        _validatedFieldBlock(_validationResult, isEditing);
-                }
-                else if (self.text.length == 0 ||
-                         self.text.length < _minimalNumberOfCharactersToStartValidation)
-                {
-                    if (_baseColor)
-                        self.textColor = _baseColor;
-                    
-                    if (_validatedFieldBlock)
-                        _validatedFieldBlock(ValueTooShortToValidate, isEditing);
-                }
-            }
-        }
+        (!isEditing && !_validWhenType)) {
+        [self validateFieldWithIsEditing:isEditing];
     }
     
     return isEditing;
+}
+
+- (void)setText:(NSString *)text {
+    [super setText:text];
+    [self validateFieldWithIsEditing:self.isEnabled];
 }
 
 

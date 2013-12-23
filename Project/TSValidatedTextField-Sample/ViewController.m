@@ -30,6 +30,9 @@
     [self configureTextFieldValidatedAfterFewCharacters]; /// wordStartsWithA
     [self configureTextFieldWhichValidatesManyOccurences]; /// separatedNumbersByComma;
     [self configureWordStartsWithB]; /// wordStartsWithB
+    
+    
+    _fullNameTextField.text = @"Tomasz Szulc";
 }
 
 
