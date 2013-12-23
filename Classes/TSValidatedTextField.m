@@ -72,6 +72,40 @@
 
 #pragma mark - Lifecycle of validation
 
+-(void)setText:(NSString *)text {
+    [super setText:text];
+    if (!_previousText || ![_previousText isEqualToString:self.text])
+    {
+        _previousText = self.text;
+        if (self.text.length > 0 && !_fieldHasBeenEdited)
+            _fieldHasBeenEdited = YES;
+
+        if (_fieldHasBeenEdited)
+        {
+            [self willChangeValueForKey:@"isValid"];
+            _validationResult = [self validRegexp];
+            [self didChangeValueForKey:@"isValid"];
+
+            if (self.text.length >= _minimalNumberOfCharactersToStartValidation)
+            {
+                [self updateViewForState:_validationResult];
+
+                if (_validatedFieldBlock)
+                    _validatedFieldBlock(_validationResult, self.isEditing);
+            }
+            else if (self.text.length == 0 ||
+                     self.text.length < _minimalNumberOfCharactersToStartValidation)
+            {
+                if (_baseColor)
+                    self.textColor = _baseColor;
+
+                if (_validatedFieldBlock)
+                    _validatedFieldBlock(ValueTooShortToValidate, self.isEditing);
+            }
+        }
+    }
+}
+
 - (BOOL)isEditing
 {
     BOOL isEditing = [super isEditing];
