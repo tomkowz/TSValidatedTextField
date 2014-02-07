@@ -78,4 +78,9 @@ typedef void (^ValidationBlock)(ValidationResult result, BOOL isEditing);
  Default set to 1 (minimum value). */
 @property NSUInteger minimalNumberOfCharactersToStartValidation;
 
+
+/** Use to validate field if you want to force validating. Default behaviour is that field is validating when user is typing or when user change field to another.
+ */
+- (void)validate;
+
 @end

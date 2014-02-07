@@ -236,6 +236,9 @@
     return _regexp.pattern != nil;
 }
 
+- (void)validate {
+    [self validateFieldWithIsEditing:NO];
+}
 
 #pragma mark - Validation
 - (ValidationResult)validRegexp
