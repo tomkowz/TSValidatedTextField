@@ -6,6 +6,11 @@ Simple and ready to use subclass of UITextField that allows you to validate Text
 ![image](https://dl.dropboxusercontent.com/u/11493275/github/TSValidatedTextField/1.png)![image](https://dl.dropboxusercontent.com/u/11493275/github/TSValidatedTextField/2.png)
 
 
+CocoaPods
+====================
+You can install it via Cocoapods.
+
+
 Properties
 ====================
 **regexpPattern** - String pattern which will be used to valid value from the field.
