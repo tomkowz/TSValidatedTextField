@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "TSValidatedTextField"
   s.version      = "1.0.0"
-  s.summary      = "Simple and ready to use subclass of UITextField which uses NSRegularExpression to allows you to validate text in the text field with pattern you set."
+  s.summary      = "Simple and ready to use subclass of UITextField which uses NSRegularExpression to validate text with pattern you set."
   s.homepage     = "http://github.com/tomkowz/TSValidatedTextField"
 
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
