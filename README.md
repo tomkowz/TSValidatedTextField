@@ -6,9 +6,16 @@ Simple and ready to use subclass of UITextField that allows you to validate Text
 ![image](https://dl.dropboxusercontent.com/u/11493275/github/TSValidatedTextField/1.png)![image](https://dl.dropboxusercontent.com/u/11493275/github/TSValidatedTextField/2.png)
 
 
+# Donate
+If you like it... :)
+
+<a href="https://flattr.com/submit/auto?user_id=tomkowz&url=http%3A%2F%2Fgithub.com%2Ftomkowz%2FTSValidatedTextField" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>
+
 CocoaPods
 ====================
 You can install it via Cocoapods.
+    
+    pod 'TSValidatedTextField', '~> 1.0'
 
 
 Properties
