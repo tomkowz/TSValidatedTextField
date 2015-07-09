@@ -10,29 +10,21 @@
 
 @interface TSValidatedTextField ()
 
-@property (readonly) BOOL canValid;
-@property UIColor *baseColor;
-@property BOOL fieldHasBeenEdited;
+@property (nonatomic, readonly) BOOL canValid;
+@property (nonatomic, strong) UIColor *baseColor;
+@property (nonatomic) BOOL fieldHasBeenEdited;
 
+@property (nonatomic) ValidationResult validationResult;
+@property (nonatomic, copy) NSString *previousText;
 @end
 
 @implementation TSValidatedTextField
-{
-    ValidationResult _validationResult;
-    NSString *_previousText;
-}
-
-@synthesize regexpInvalidColor = _regexpInvalidColor;
-@synthesize regexpValidColor = _regexpValidColor;
-@synthesize regexpPattern = _regexpPattern;
-@synthesize looksForManyOccurences = _looksForManyOccurences;
-@synthesize validWhenType = _validWhenType;
-@synthesize minimalNumberOfCharactersToStartValidation = _minimalNumberOfCharactersToStartValidation;
 
 #pragma mark - Initialization
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    if (self)
     {
         [self configureForValidation];
     }
@@ -61,59 +53,57 @@
 
 - (void)configureForValidation
 {
-    _minimalNumberOfCharactersToStartValidation = 1;
-    _validWhenType = YES;
-    _fieldHasBeenEdited = NO;
-    _validationResult = ValidationFailed;
-    _occurencesSeparators = nil;
+    self.minimalNumberOfCharactersToStartValidation = 1;
+    self.validWhenType = YES;
+    self.fieldHasBeenEdited = NO;
+    self.validationResult = ValidationResultFailed;
+    self.occurencesSeparators = nil;
     [self setRegexpPattern:@""];
 }
 
 
 #pragma mark - Lifecycle of validation
 - (void)validateFieldWithIsEditing:(BOOL)isEditing {
-    if (!_previousText || ![_previousText isEqualToString:self.text])
+    if (!self.previousText || ![self.previousText isEqualToString:self.text])
     {
-        _previousText = self.text;
-        if (self.text.length > 0 && !_fieldHasBeenEdited)
-            _fieldHasBeenEdited = YES;
+        self.previousText = self.text;
+        if (self.text.length > 0 && !self.fieldHasBeenEdited)
+            self.fieldHasBeenEdited = YES;
         
-        if (_fieldHasBeenEdited)
+        if (self.fieldHasBeenEdited)
         {
             [self willChangeValueForKey:@"isValid"];
-            _validationResult = [self validRegexp];
+            self.validationResult = [self validRegexp];
             [self didChangeValueForKey:@"isValid"];
             
-            if (self.text.length >= _minimalNumberOfCharactersToStartValidation)
+            if (self.text.length >= self.minimalNumberOfCharactersToStartValidation)
             {
-                [self updateViewForState:_validationResult];
+                [self updateViewForState:self.validationResult];
                 
-                if (_validatedFieldBlock)
-                    _validatedFieldBlock(_validationResult, isEditing);
+                if (self.validatedFieldBlock)
+                    self.validatedFieldBlock(self.validationResult, isEditing);
             }
             else if (self.text.length == 0 ||
-                     self.text.length < _minimalNumberOfCharactersToStartValidation)
+                     self.text.length < self.minimalNumberOfCharactersToStartValidation)
             {
                 if (_baseColor)
-                    self.textColor = _baseColor;
+                    self.textColor = self.baseColor;
                 
-                if (_validatedFieldBlock)
-                    _validatedFieldBlock(ValueTooShortToValidate, isEditing);
+                if (self.validatedFieldBlock)
+                    self.validatedFieldBlock(ValidationResultValueTooShort, isEditing);
             }
         }
     }
 
 }
 
-
 - (BOOL)isEditing
 {
     BOOL isEditing = [super isEditing];
-    if ((isEditing && _validWhenType) ||
-        (!isEditing && !_validWhenType)) {
+    if ((isEditing && self.validWhenType) ||
+        (!isEditing && !self.validWhenType)) {
         [self validateFieldWithIsEditing:isEditing];
     }
-    
     return isEditing;
 }
 
@@ -126,30 +116,10 @@
 #pragma mark - Accessors
 - (BOOL)isValid
 {
-    if (_validationResult == ValidationPassed)
+    if (self.validationResult == ValidationResultPassed)
         return YES;
     else
         return NO;
-}
-
-- (BOOL)isLooksForManyOccurences
-{
-    return _looksForManyOccurences;
-}
-
-- (void)setLooksForManyOccurences:(BOOL)looksForManyOccurences
-{
-    _looksForManyOccurences = looksForManyOccurences;
-}
-
-- (BOOL)isValidWhenType
-{
-    return _validWhenType;
-}
-
-- (void)setValidWhenType:(BOOL)validWhenType
-{
-    _validWhenType = validWhenType;
 }
 
 - (void)setMinimalNumberOfCharactersToStartValidation:(NSUInteger)minimalNumberOfCharacterToStartValidation
@@ -157,11 +127,6 @@
     if (minimalNumberOfCharacterToStartValidation  < 1)
         minimalNumberOfCharacterToStartValidation = 1;
     _minimalNumberOfCharactersToStartValidation = minimalNumberOfCharacterToStartValidation;
-}
-
-- (NSUInteger)minimalNumberOfCharactersToStartValidation
-{
-    return _minimalNumberOfCharactersToStartValidation;
 }
 
 
@@ -174,14 +139,9 @@
     [self configureRegexpWithPattern:regexpPattern];
 }
 
-- (NSString *)regexpPattern
-{
-    return _regexp.pattern;
-}
-
 - (void)configureRegexpWithPattern:(NSString *)pattern
 {
-    _regexp = [[NSRegularExpression alloc] initWithPattern:pattern options:0 error:nil];
+    self.regexp = [[NSRegularExpression alloc] initWithPattern:pattern options:0 error:nil];
 }
     
 
@@ -193,23 +153,12 @@
     _regexpInvalidColor = regexpInvalidColor;
 }
 
-- (UIColor *)regexpInvalidColor
-{
-    return _regexpInvalidColor;
-}
-
 - (void)setRegexpValidColor:(UIColor *)regexpValidColor
 {
     if (!_baseColor)
         _baseColor = self.textColor;
     _regexpValidColor = regexpValidColor;
 }
-
-- (UIColor *)regexpValidColor
-{
-    return _regexpValidColor;
-}
-
 
 #pragma mark - Validation View Management
 - (void)updateViewForState:(ValidationResult)result
@@ -222,10 +171,10 @@
     if (canShow)
     {
         UIColor *color = self.textColor;
-        if (result == ValidationPassed && _regexpValidColor)
-            color = _regexpValidColor;
-        else if (result == ValidationFailed && _regexpInvalidColor)
-            color = _regexpInvalidColor;
+        if (result == ValidationResultPassed && self.regexpValidColor)
+            color = self.regexpValidColor;
+        else if (result == ValidationResultFailed && self.regexpInvalidColor)
+            color = self.regexpInvalidColor;
 
         self.textColor = color;
     }
@@ -233,7 +182,7 @@
 
 - (BOOL)canValid
 {
-    return _regexp.pattern != nil;
+    return self.regexp.pattern != nil;
 }
 
 - (void)validate {
@@ -244,14 +193,14 @@
 - (ValidationResult)validRegexp
 {
     NSString *text = self.text;
-    ValidationResult valid = ValidationPassed;
+    ValidationResult valid = ValidationResultPassed;
     if (self.canValid)
     {
         NSRange textRange = NSMakeRange(0, text.length);
-        NSArray *matches = [_regexp matchesInString:text options:0 range:textRange];
+        NSArray *matches = [self.regexp matchesInString:text options:0 range:textRange];
 
         NSRange resultRange = NSMakeRange(NSNotFound, 0);
-        if (matches.count == 1 && !_looksForManyOccurences)
+        if (matches.count == 1 && !self.looksForManyOccurences)
         {
             NSTextCheckingResult *result = (NSTextCheckingResult *)matches[0];
             resultRange = result.range;
@@ -262,9 +211,9 @@
         }
         
         if (NSEqualRanges(textRange, resultRange))
-            valid = ValidationPassed;
+            valid = ValidationResultPassed;
         else
-            valid = ValidationFailed;
+            valid = ValidationResultFailed;
     }
     
     return valid;
@@ -292,9 +241,9 @@
                 NSString *stringInRange = [self.text substringWithRange:NSMakeRange(lastLocation, result.range.location - lastLocation)];
 
                 BOOL separatorValid = NO;
-                if (_occurencesSeparators)
+                if (self.occurencesSeparators)
                 {
-                    for (NSString *separator in _occurencesSeparators)
+                    for (NSString *separator in self.occurencesSeparators)
                     {
                         if ([stringInRange isEqualToString:separator])
                         {
@@ -314,7 +263,6 @@
                 break;
         }
     }
-    
     return NSMakeRange(0, lastLocation);
 }
 

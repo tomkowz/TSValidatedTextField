@@ -51,15 +51,15 @@
     _phoneNumberTextField.validatedFieldBlock = ^(ValidationResult result, BOOL isEditing) {
       
         switch (result) {
-            case ValidationPassed:
+            case ValidationResultPassed:
                 NSLog(@"Field is valid.");
                 break;
                 
-            case ValidationFailed:
+            case ValidationResultFailed:
                 NSLog(@"Field is invalid.");
                 break;
                 
-            case ValueTooShortToValidate:
+            case ValidationResultValueTooShort:
                 NSLog(@"Value too short to validate. Type longer");
                 break;
         }
