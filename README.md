@@ -13,7 +13,7 @@ If you like it... :)
 
 CocoaPods
 ====================
-You can install it via Cocoapods.
+You can install it via CocoaPods.
     
     pod 'TSValidatedTextField', '~> 1.0'
 
